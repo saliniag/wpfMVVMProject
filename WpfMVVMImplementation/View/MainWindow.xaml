@@ -1,0 +1,50 @@
+﻿<Window x:Class="WpfMVVMImplementation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        
+        Title="MainWindow" Height="350" Width="525"
+   
+        xmlns:local="clr-namespace:WpfMVVMImplementation"
+        xmlns:vm="clr-namespace:WpfMVVMImplementation.ModelView"
+        xmlns:converter="clr-namespace:WpfMVVMImplementation.Converter"
+        >
+
+    <!--Defin eth  namesapace for view model-->
+    <!--we will also make a change in APP>config file about main window being located in view folder -->
+    <!-- first the xmlns:local namespace-->
+    <Window.Resources>
+        <vm:PersonViewModel x:Key="pvm"></vm:PersonViewModel>
+        <converter:converter x:Key="converter"></converter:converter>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource pvm}}">
+        <Grid.RowDefinitions>
+           <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="First Name" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="center" Margin="5"/>
+        <TextBlock Text="Last Name" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="center" Margin="5"/>
+        <TextBox Text="{Binding Pobj.Fname, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Height="20" Width="100" HorizontalAlignment="Center" TextWrapping="Wrap"    VerticalAlignment="center" Margin="5"/>
+        <TextBox Text="{Binding Pobj.Lname, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Height="20" Width="100" HorizontalAlignment="Center" TextWrapping="Wrap"    VerticalAlignment="center" Margin="5"/>
+        <Button Content="submit" Command="{Binding SubmitCommand}" Grid.Row="2" Grid.Column="0" Margin="5"/>
+        <ListView ItemsSource="{Binding PersonList}" Grid.Column="1" Grid.Row="3" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="First Name" Width="auto" DisplayMemberBinding="{Binding Fname}"/>
+                    <GridViewColumn Header="Last Name" Width="auto" DisplayMemberBinding="{Binding Lname}"/>
+                    <GridViewColumn Header="Full Name" Width="auto" DisplayMemberBinding="{Binding FullName}"/>
+                    <GridViewColumn Header="Date" Width="auto" DisplayMemberBinding="{Binding dateAdded , Converter={StaticResource converter } }"/>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
